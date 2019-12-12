@@ -36,4 +36,5 @@ def tweeter_scrapper():
         clear_list_of_tweets.append(dirty_tweet)
     print(clear_list_of_tweets)
 
-tweeter_scrapper()
+if __name__ == "__main__":
+    tweeter_scrapper()
