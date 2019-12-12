@@ -5,11 +5,10 @@ import time
 import re
 import os 
 
-
-send_meth = 'sendMessage'
-token = '772758152:AAEPfekp2KJy01ad2BbDbd3zjdQEw-3qmN8'
-base_url = 'https://api.telegram.org/bot{}'.format(token)
-user = '70319882'
+send_method = 'sendMessage'
+telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+telegram_user_id = os.getenv('TELEGRAM_USER_ID')
+base_url = 'https://api.telegram.org/bot{}'.format(telegram_bot_token)
 
 def send_request(offset=''):
     respons = requests.get(
@@ -33,10 +32,10 @@ def get_updates():
                 'user': item['message']['from']
             }
 
-def send_post(token, send_meth):
+def send_post(telegram_bot_token, send_method):
     response = requests.post(
-    url='https://api.telegram.org/bot{0}/{1}'.format(token, send_meth),
-    data={'chat_id': user, 'text': final_sentiment }
+    url='https://api.telegram.org/bot{0}/{1}'.format(telegram_bot_token, send_method),
+    data={'chat_id': telegram_user_id, 'text': final_sentiment }
     ).json()
 
 
@@ -104,8 +103,8 @@ if __name__ == "__main__":
             print( 'counts of very negative tweet: ' + str(very_negative_count))
         if negative_count + very_negative_count > positive_count + very_positive_count:
             final_sentiment = 'This person posts NEGATIVE tweet in his/her/other 20 last tweets'
-            send_post(token, send_meth)
+            send_post(telegram_bot_token, send_method)
         elif negative_count + very_negative_count < positive_count + very_positive_count:
             final_sentiment = 'This person posts POSITIVE tweet in his/her/other 20 last tweets'
-            send_post(token, send_meth)
+            send_post(telegram_bot_token, send_method)
 
